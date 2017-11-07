@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AndroidLocation</string>
+    <string name="msg_loc_per_missing">Location permission missing.</string>
+    <string name="msg_req_fail">Unable to fetch location.</string>
+    <string name="msg_loc_null">Location is null.</string>
+    <string name="msg_loc_sett_disabled">Location is disabled from settings.</string>
+    <string name="msg_loc_not_supp">Location not supported.</string>
+</resources>
