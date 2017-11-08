@@ -33,7 +33,11 @@ class LocationUpdate(private val activity: Activity) {
         object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult?) {
                 super.onLocationResult(p0)
-                location = p0?.lastLocation
+                p0?.let {
+                    location = p0?.lastLocation
+                    listener?.onLocationFound(location)
+                }
+
             }
         }
     }
@@ -54,24 +58,19 @@ class LocationUpdate(private val activity: Activity) {
     /**
      * Init location request.
      */
-    private fun buildLocationRequest(): LocationUpdate {
+    fun setUp(): LocationUpdate {
+        // Build location request.
         locReq = LocationRequest()
         locReq.fastestInterval = fastUpdateInt
         locReq.interval = updateInterval
         locReq.priority = priority
-        return this
-    }
 
-    /**
-     * Init location setting req builder.
-     */
-    private fun buildLocSettingReq(): LocationUpdate {
+        // Build location setting request.
         var locSetReqBuilder = LocationSettingsRequest.Builder()
         locSetReqBuilder.addLocationRequest(locReq)
         locaSettingReq = locSetReqBuilder.build()
         return this
     }
-
 
     // Must pass onActivityResult from your activity to here
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -111,11 +110,11 @@ class LocationUpdate(private val activity: Activity) {
                     }
                 }
                 .addOnFailureListener {
-                    var statusCode = (it as ApiException).statusCode
+                    val statusCode = (it as ApiException).statusCode
                     when (statusCode) {
                         LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
                             try {
-                                var rae = (it as ResolvableApiException)
+                                val rae = (it as ResolvableApiException)
                                 rae.startResolutionForResult(activity, RC_SETTINGS)
                             } catch (sie: IntentSender.SendIntentException) {
                                 listener?.onLocationError(sie.localizedMessage)

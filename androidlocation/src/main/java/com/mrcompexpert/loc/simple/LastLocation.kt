@@ -30,7 +30,7 @@ class LastLocation(private val context: Context) {
         if (context.hasPermission(LOC_PER)) {
             fusedLocationClient.lastLocation.addOnCompleteListener {
                 if (it.isSuccessful) {
-                    it.result.let {
+                    it.result?.let {
                         listener?.onLocationFound(it)
                     } ?: listener?.onLocationError(context.resources.getString(R.string.msg_loc_null))
                 } else {
