@@ -1,5 +1,6 @@
 package com.mrcompexpert.loc.demo
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Build
@@ -15,12 +16,12 @@ import java.util.*
 
 class DemoActivity : AppCompatActivity() {
 
-    val RC_LOC = 2222;
-    val locUpdate by lazy { LocationUpdate(this).setUp() }
+    private val rcLoc = 2222
+    private val locUpdate by lazy { LocationUpdate(this).setUp() }
 
-    val lastLocation by lazy { LastLocation(applicationContext) }
+    private val lastLocation by lazy { LastLocation(applicationContext) }
 
-
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.demo_act)
@@ -52,7 +53,7 @@ class DemoActivity : AppCompatActivity() {
             lastLocation.getLastLocation()
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(LOC_PER, RC_LOC)
+                requestPermissions(LOC_PER, rcLoc)
             } else {
                 locUpdate.startLocationRequest()
                 lastLocation.getLastLocation()
@@ -63,7 +64,7 @@ class DemoActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == RC_LOC) {
+        if (requestCode == rcLoc) {
             if (hasPermission(LOC_PER)) {
                 locUpdate.startLocationRequest()
                 lastLocation.getLastLocation()
