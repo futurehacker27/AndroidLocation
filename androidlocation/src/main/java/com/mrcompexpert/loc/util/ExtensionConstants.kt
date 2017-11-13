@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 
-val RC_SETTINGS = 199
+const val RC_SETTINGS = 199
 
 val LOC_PER : Array<String> = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION)

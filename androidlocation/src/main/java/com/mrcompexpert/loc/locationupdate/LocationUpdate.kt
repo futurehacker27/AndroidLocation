@@ -22,7 +22,7 @@ import com.mrcompexpert.loc.util.hasPermission
 class LocationUpdate(private val activity: Activity) {
 
     private val fusedLocationClient by lazy {
-        LocationServices.getFusedLocationProviderClient(activity);
+        LocationServices.getFusedLocationProviderClient(activity)
     }
 
     private val settingClient by lazy {
@@ -34,7 +34,7 @@ class LocationUpdate(private val activity: Activity) {
             override fun onLocationResult(p0: LocationResult?) {
                 super.onLocationResult(p0)
                 p0?.let {
-                    location = p0?.lastLocation
+                    location = p0.lastLocation
                     listener?.onLocationFound(location)
                 }
 
@@ -66,7 +66,7 @@ class LocationUpdate(private val activity: Activity) {
         locReq.priority = priority
 
         // Build location setting request.
-        var locSetReqBuilder = LocationSettingsRequest.Builder()
+        val locSetReqBuilder = LocationSettingsRequest.Builder()
         locSetReqBuilder.addLocationRequest(locReq)
         locaSettingReq = locSetReqBuilder.build()
         return this
@@ -81,7 +81,7 @@ class LocationUpdate(private val activity: Activity) {
                         startLocationRequest()
                     }
                     RESULT_CANCELED -> {
-                        requestingLocationUpdate = false;
+                        requestingLocationUpdate = false
                         listener?.onLocationError(activity.getString(R.string.msg_loc_sett_disabled))
                     }
                 }
