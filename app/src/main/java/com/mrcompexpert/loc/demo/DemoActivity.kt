@@ -32,7 +32,7 @@ class DemoActivity : AppCompatActivity() {
             }
 
             override fun onLocationFound(loc: Location?) {
-                updatedLocationTv.text = "loc : ${loc?.latitude}, ${loc?.longitude}\n time : ${Date()}"
+                updatedLocationTv.text = "loc : ${loc?.latitude}, ${loc?.longitude}\ntime : ${Date()}"
             }
 
         }
@@ -76,6 +76,12 @@ class DemoActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         locUpdate.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isFinishing)
+            locUpdate.stopLocationRequest()
     }
 
 }
