@@ -57,10 +57,9 @@ class LocationUpdate(private val activity: AppCompatActivity) {
     private var location: Location? = null
 
     var updateInterval = 3000L //Default 3s.
-    var fastUpdateInt = 2000L // Degault 2s.
+    var fastUpdateInt = 2000L // Default 2s.
     var priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     var listener: OnLocation? = null
-
 
     /**
      * Init location request.
@@ -74,11 +73,9 @@ class LocationUpdate(private val activity: AppCompatActivity) {
 
         pm.listener = object : OnPermissionResult {
             override fun onPermissionResult(rq: Int, granted: Boolean) {
-                if (granted) locaSettingReq else listener?.onLocationError(activity.resources.getString(R.string.msg_loc_per_missing))
+                if (granted) start() else listener?.onLocationError(activity.resources.getString(R.string.msg_loc_per_missing))
             }
-
         }
-
         return this
     }
 
@@ -104,9 +101,8 @@ class LocationUpdate(private val activity: AppCompatActivity) {
      * Start Location Update.
      */
     @SuppressLint("MissingPermission")
-    @RequiresPermission(anyOf = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION))
-    fun startLocationRequest() {
+    @RequiresPermission(anyOf = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION))
+    private fun start() {
         settingClient.checkLocationSettings(locaSettingReq)
                 .addOnSuccessListener {
                     if (activity.hasPermission(LOC_PER)) {
@@ -136,8 +132,15 @@ class LocationUpdate(private val activity: AppCompatActivity) {
                             listener?.onLocationError(activity.getString(R.string.msg_loc_not_supp))
                         }
                     }
-
                 }
+    }
+
+    fun startLocationRequest() {
+        if (activity.hasPermission(LOC_PER)) {
+            start()
+        } else {
+            pm.requestPermission(RC_PER, LOC_PER)
+        }
     }
 
     /**
@@ -150,6 +153,4 @@ class LocationUpdate(private val activity: AppCompatActivity) {
                     requestingLocationUpdate = false
                 }
     }
-
-
 }

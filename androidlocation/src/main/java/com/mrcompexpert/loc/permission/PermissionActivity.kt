@@ -5,13 +5,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import com.mrcompexpert.loc.util.EXTRA_DATA
 import com.mrcompexpert.loc.util.EXTRA_RESULT
 import com.mrcompexpert.loc.util.RC_PERM
 import com.mrcompexpert.loc.util.hasPermission
 
-class PermissionActivity : AppCompatActivity() {
+class PermissionActivity : Activity() {
 
     lateinit var perms: Array<String>
 

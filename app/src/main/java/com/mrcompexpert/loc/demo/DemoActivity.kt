@@ -3,20 +3,16 @@ package com.mrcompexpert.loc.demo
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.mrcompexpert.loc.OnLocation
 import com.mrcompexpert.loc.locationupdate.LocationUpdate
 import com.mrcompexpert.loc.simple.LastLocation
-import com.mrcompexpert.loc.util.LOC_PER
-import com.mrcompexpert.loc.util.hasPermission
 import kotlinx.android.synthetic.main.demo_act.*
 import java.util.*
 
 class DemoActivity : AppCompatActivity() {
 
-    private val rcLoc = 2222
     private val locUpdate by lazy { LocationUpdate(this).setUp() }
 
     private val lastLocation by lazy { LastLocation(applicationContext) }
@@ -48,30 +44,9 @@ class DemoActivity : AppCompatActivity() {
 
         }
 
-        if (hasPermission(LOC_PER)) {
-            locUpdate.startLocationRequest()
-            lastLocation.getLastLocation()
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(LOC_PER, rcLoc)
-            } else {
-                locUpdate.startLocationRequest()
-                lastLocation.getLastLocation()
-            }
-        }
-
+        locUpdate.startLocationRequest()
+        lastLocation.getLastLocation()
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == rcLoc) {
-            if (hasPermission(LOC_PER)) {
-                locUpdate.startLocationRequest()
-                lastLocation.getLastLocation()
-            }
-        }
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
